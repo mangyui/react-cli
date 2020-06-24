@@ -1,25 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom'
+
+import LoginView from '@/views/Login'
+import HomeView from './views/Home'
+
+class DefaultLayout extends React.Component {
+  render () {
+    return (
+      <div>默认</div>
+    )
+  }
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HashRouter>
+        <Switch>
+            <Route path='/' exact render={() => <Redirect to='/home' />} />
+            <Route path='/home' component={HomeView} />
+            <Route path='/login' component={LoginView} />
+            <Route component={DefaultLayout} />
+        </Switch>
+    </HashRouter>
   );
 }
 
