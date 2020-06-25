@@ -1,28 +1,43 @@
 import React from 'react'
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom'
+import routes from '@/router'
+import { connect } from 'react-redux'
 
-import LoginView from '@/views/Login'
-import HomeView from './views/Home'
+const DefaultLayout = () => (
+  <div>默1认</div>
+)
 
-class DefaultLayout extends React.Component {
-  render () {
-    return (
-      <div>默认</div>
-    )
-  }
-}
-
-function App() {
+function App(props) {
+  let { rootState, user } = props
   return (
-    <HashRouter>
-        <Switch>
-            <Route path='/' exact render={() => <Redirect to='/home' />} />
-            <Route path='/home' component={HomeView} />
-            <Route path='/login' component={LoginView} />
-            <Route component={DefaultLayout} />
-        </Switch>
-    </HashRouter>
+    <div>
+      <p>{rootState}</p>
+      <HashRouter>
+          <Switch>
+              <Route path='/' exact render={() => <Redirect to='/home' />} />
+              {routes.map(item => (
+                  <Route
+                      key={item.path}
+                      path={item.path}
+                      exact={item.exact}
+                      // react路由守卫可以在这里做
+                      render={props => user.id ? (<item.component {...props} />) :
+                          <Redirect to='/404' {...props} /> }>
+                  </Route>
+              ))}
+              <Route component={DefaultLayout} />
+          </Switch>
+      </HashRouter>
+    </div>
   );
 }
 
-export default App;
+const stateToProp = state => ({
+  rootState: state.rootState,
+  user: state.user
+})
+
+
+export default connect(
+  stateToProp,
+)(App);
