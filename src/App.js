@@ -2,6 +2,8 @@ import React from 'react'
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom'
 import routes from '@/router'
 import { connect } from 'react-redux'
+import '@/styles/base.less'
+import '@/styles/app.less'
 
 const DefaultLayout = () => (
   <div>默1认</div>
@@ -11,7 +13,7 @@ function App(props) {
   let { rootState, user } = props
   return (
     <div>
-      <p>{rootState}</p>
+      <p id="rootStateBox">{rootState}</p>
       <HashRouter>
           <Switch>
               <Route path='/' exact render={() => <Redirect to='/home' />} />
